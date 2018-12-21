@@ -120,6 +120,7 @@ button {
 .meetup_single h3 {
 	font-weight: bold;
 	font-size: 16px;
+	margin-top: 20px;
 	margin-bottom: 5px;
 }
 .meetup_single img {
@@ -164,4 +165,14 @@ button {
 }
 .comment input {
 	padding: 5px 10px;
+}
+
+.user_details {
+	float: left;
+	width: 30%;
+}
+
+.top_feed {
+	float: left;
+	width: 70%;
 }
