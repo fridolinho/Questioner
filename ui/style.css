@@ -180,3 +180,15 @@ button {
 	float: left;
 	width: 70%;
 }
+
+footer {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	background-color: #90caf9;
+	padding: 10px 20px;
+}
+
+footer p {
+	text-align: center;
+}
