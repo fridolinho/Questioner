@@ -78,6 +78,13 @@ table {
 	margin-bottom: 10px;
 }
 
+button {
+	padding: 5px 10px;
+	border-radius: 2px;
+	background-color: #90caf9;
+	margin-bottom:20px;
+	border-color: white;
+}
 #Signform button {
 	width: 100%;
 	padding: 5px 10px;
@@ -86,10 +93,11 @@ table {
 	margin-bottom:20px;
 }
 #meetup {
-	padding: 20px 30px;
+	padding: 20px 100px;
 }
-#meetup h1 {
-	text-align: center;
+#meetup h2 {
+	font-weight: bold;
+	font-size: 20px;
 }
 .single_meetup {
 	padding: 10px;
@@ -106,6 +114,18 @@ table {
 	width: 80%;
 }
 
+.meetup_single h2 {
+	margin-bottom: 20px;
+}
+.meetup_single h3 {
+	font-weight: bold;
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+.meetup_single img {
+	float: left;
+	margin-right: 10px;
+}
 .right {
 	float: right;
 }
@@ -129,4 +149,19 @@ table {
 
 #navbar a:hover {
 	color:blue;
+}
+
+#hidden {
+	display: none;
+}
+
+.comment li {
+	background-color: #eaf1ed;
+	padding: 10px 20px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	margin-top: 10px;
+}
+.comment input {
+	padding: 5px 10px;
 }
