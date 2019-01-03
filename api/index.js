@@ -117,7 +117,20 @@ app.get('/api/v1/meetup/:id', (req,res) =>{
 	res.send(meetup);
 })
 
+app.post('/api/v1/meetup', (req,res)=>{
+	const meetup = {
+		id: meetups.length +1,
+		createdOn: Date(),
+		location: req.body.location,
+		images: req.body.image,
+		topic: req.body.topic,
+		happeningOn: req.body.happeningOn,
+		Tags:req.body.Tags
+	}
 
+	meetups.push(meetup);
+	res.send(meetup);
+})
 
 
 
