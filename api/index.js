@@ -54,7 +54,7 @@ const questions = [
 		createdOn : "19/12/2018" ,
 		createdBy : 1 , // represents the user asking the question
 		meetup : 1 , // represents the meetup the question is for
-		title : "quesstion 1" ,
+		title : "question 1" ,
 		body : "Quisque lacus ante, lacinia et diam vel, mattis maximus enim. Morbi et mattis metus, vitae sagittis arcu. Nunc vel tincidunt risus, ac rhoncus nisi. Nam sagittis iaculis nisl non mattis. Cras a gravida velit. Suspendisse tortor mauris, eleifend et leo a, volutpat varius augue. Nullam sed lorem mollis, ornare mi vel, imperdiet sapien. Duis orci sem, eleifend nec orci egestas, luctus sagittis arcu. Fusce accumsan blandit viverra. Vivamus feugiat dolor eu malesuada vestibulum. Sed suscipit commodo nunc. " ,
 		votes : 0 ,
 	},
@@ -152,8 +152,30 @@ app.delete('/api/v1/meetup/:id', (req,res)=>{
 	res.send(meetup);
 })
 
-app.get('/api/question', (req,res) =>{
+app.get('/api/v1/question', (req,res) =>{
 	res.send(questions);
+})
+
+app.post('/api/v1/question', (req,res)=>{
+	const question = {
+		id: questions.length +1,
+		createdOn: req.body.createdOn,
+		createdBy: req.body.createdBy,
+		meetup: req.body.meetup,
+		title: req.body.title,
+		body: req.body.body
+	}
+
+	questions.push(question);
+	res.send(question);
+})
+
+app.get('/api/v1/fridolin', (res,req, next)=>{
+
+
+	res.send("fridolin");
+	next();
+
 })
 
 const port = process.env.PORT || 3000;
