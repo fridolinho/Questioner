@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 const meetups = [
 	{
 		id : 1,
@@ -43,7 +44,20 @@ const meetups = [
 	}
 ]
 
+app.post('/api/meetup', (req,res)=>{
+	const meetup = {
+		id: meetups.length +1,
+		createdOn: Date(),
+		location: req.body.location,
+		images: req.body.image,
+		topic: req.body.topic,
+		happeningOn: req.body.happeningOn,
+		Tags:req.body.Tags
+	}
 
+	meetups.push(meetup);
+	res.send(meetup);
+})
 
 app.get('/api/meetup', (req,res) =>{
 	res.send(meetups);
