@@ -105,6 +105,8 @@ const questions = [
 	}
 ]
 
+const rsvp = [];
+
 
 app.get('/api/v1/meetup', (req,res) =>{
 	res.send(meetups);
@@ -170,7 +172,17 @@ app.post('/api/v1/question', (req,res)=>{
 	res.send(question);
 })
 
+app.post('/api/v1/rsvp', (req,res)=>{
+	const single_rsvp = {
+		id: rsvp.length + 1,
+		user: req.body.user,
+		meetup: req.body.meetup,
+		response: req.body.response
+	}
 
+	rsvp.push(single_rsvp);
+	res.send(single_rsvp);
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, ()=> console.log(`listening to port ${port}...`));
