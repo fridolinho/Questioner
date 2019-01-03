@@ -143,6 +143,15 @@ app.put('/api/v1/meetup/:id', (req,res)=>{
 	res.send(meetup);
 })
 
+app.delete('/api/v1/meetup/:id', (req,res)=>{
+	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
+	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	const index = meetups.indexOf(meetup);
+	meetups.splice(index, 1);
+
+	res.send(meetup);
+})
+
 app.get('/api/question', (req,res) =>{
 	res.send(questions);
 })
