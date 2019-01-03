@@ -105,11 +105,21 @@ const questions = [
 	}
 ]
 
+
+app.get('/api/v1/meetup', (req,res) =>{
+	res.send(meetups);
+});
+
+
 app.get('/api/v1/meetup/:id', (req,res) =>{
 	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
 	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
 	res.send(meetup);
 })
+
+
+
+
 
 app.get('/api/question', (req,res) =>{
 	res.send(questions);
