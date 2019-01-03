@@ -44,30 +44,9 @@ const meetups = [
 	}
 ]
 
-app.post('/api/meetup', (req,res)=>{
-	const meetup = {
-		id: meetups.length +1,
-		createdOn: Date(),
-		location: req.body.location,
-		images: req.body.image,
-		topic: req.body.topic,
-		happeningOn: req.body.happeningOn,
-		Tags:req.body.Tags
-	}
 
-	meetups.push(meetup);
-	res.send(meetup);
-})
 
-app.get('/api/meetup', (req,res) =>{
-	res.send(meetups);
-})
 
-app.get('/api/meetup/:id', (req,res) =>{
-	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
-	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	res.send(meetup);
-})
 
 const questions = [
 	{
@@ -125,6 +104,12 @@ const questions = [
 		votes : 0 ,
 	}
 ]
+
+app.get('/api/v1/meetup/:id', (req,res) =>{
+	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
+	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	res.send(meetup);
+})
 
 app.get('/api/question', (req,res) =>{
 	res.send(questions);
