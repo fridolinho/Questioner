@@ -132,7 +132,16 @@ app.post('/api/v1/meetup', (req,res)=>{
 	res.send(meetup);
 })
 
-
+app.put('/api/v1/meetup/:id', (req,res)=>{
+	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
+	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	meetup.location = req.body.location,
+	meetup.image = req.body.image,
+	meetup.topic = req.body.topic,
+	meetup.happeningOn = req.body.happeningOn,
+	meetup.Tags = req.body.Tags
+	res.send(meetup);
+})
 
 app.get('/api/question', (req,res) =>{
 	res.send(questions);
