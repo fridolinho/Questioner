@@ -1,4 +1,5 @@
 const express = require('express');
+const moment  = require('moment');
 const app = express();
 app.use(express.json());
 const meetups = [
@@ -178,6 +179,25 @@ app.post('/api/v1/rsvp', (req, res) => {
 
 	rsvp.push(singleRsvp);
 	res.send(singleRsvp);
+});
+
+const users = [];
+
+app.post('/api/v1/user', (req, res) => {
+	const user = {
+		id: users.length + 1,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		othername: req.body.othername,
+		email: req.body.email,
+		phoneNumber: req.body.phoneNumber,
+		username: req.body.username,
+		registered: moment().format('LL'),
+		isAdmin: "no"
+	}
+
+	users.push(user);
+	res.send(user);
 });
 
 
