@@ -168,7 +168,7 @@ app.post('/api/v1/question', (req, res) => {
 
 const rsvp = [];
 
-app.post('/api/v1/rsvp', (req,res)=>{
+app.post('/api/v1/rsvp', (req, res) => {
 	const singleRsvp = {
 		id: rsvp.length + 1,
 		user: req.body.user,
