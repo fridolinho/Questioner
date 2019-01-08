@@ -181,7 +181,30 @@ app.post('/api/v1/rsvp', (req, res) => {
 	res.send(singleRsvp);
 });
 
-const users = [];
+const users = [
+	{
+		id: 1,
+		firstname: 'fridolin',
+		lastname: 'niyonsaba',
+		othername: 'fridz',
+		email: 'fridolinho@gmail.com',
+		phoneNumber: '0788232369',
+		username: 'fridolinho',
+		registered: 'january 1, 2019',
+		isAdmin: "yes"
+	},
+	{
+		id: 2,
+		firstname: 'eric',
+		lastname: 'nbgirababyeyi',
+		othername: 'ngira',
+		email: 'eric@gmail.com',
+		phoneNumber: '0788716711',
+		username: 'eric.ngira',
+		registered: 'january 1, 2019',
+		isAdmin: "no"
+	}
+];
 
 app.post('/api/v1/user', (req, res) => {
 	const user = {
@@ -199,6 +222,15 @@ app.post('/api/v1/user', (req, res) => {
 	users.push(user);
 	res.send(user);
 });
+
+app.get('/api/v1/user', (req, res) => {
+	const email = req.body.email;
+    const user = users.filter(obj => {
+  return obj.email === email;
+});
+	if (!user) res.status(404).send(`User not found`);
+	res.send(user);
+})
 
 
 const port = process.env.PORT || 3000;
