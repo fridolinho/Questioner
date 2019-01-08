@@ -1,48 +1,55 @@
 const express = require('express');
+const moment = require('moment');
 const app = express();
 app.use(express.json());
 const meetups = [
 	{
+
 		id: 1,
 		createdOn: '12/12/2018',
 		location: 'Kigali heights',
 		images: 'img/meetup.png',
 		topic: 'meetup object 1',
-		happeningOn: '13/01/2019',
-		Tags: 'javascript, nodejs',
+		happeningOn: '01/01/2019',
+		tags: 'javascript, nodejs',
 
 	},
 	{
+
 		id: 2,
 		createdOn: '14/12/2018',
 		location: 'westerwelle',
 		images: 'img/meetup1.png',
 		topic: 'meetup object 2',
 		happeningOn: '15/01/2019',
-		Tags: 'javascript, nodejs'
+		tags: 'javascript, nodejs'
 
 	},
 	{
+
 		id: 3,
+
 		createdOn: '19/12/2018',
 		location: 'Kigali convetion center',
 		images: 'img/meetup2.png',
 		topic: 'meetup object 3',
 		happeningOn: '23/01/2019',
-		Tags: 'javascript, nodejs'
+		tags: 'javascript, nodejs'
 
 	},
 	{
+
 		id: 4,
 		createdOn: '22/12/2018',
 		location: 'Hilltop hotel',
 		images: 'img/meetup3.png',
 		topic: 'meetup object 4',
-		happeningOn: '30/02/2019',
-		Tags: 'javascript, nodejs'
+		happeningOn: '03/01/2019',
+		tags: 'javascript, nodejs'
 
 	}
-];
+]
+
 
 const questions = [
 	{
@@ -52,7 +59,7 @@ const questions = [
 		meetup: 1, // represents the meetup the question is for
 		title: "question 1",
 		body: "Quisque lacus ante, lacinia et diam vel, mattis maximus enim. Morbi et mattis metus, vitae sagittis arcu. Nunc vel tincidunt risus, ac rhoncus nisi. Nam sagittis iaculis nisl non mattis. Cras a gravida velit. Suspendisse tortor mauris, eleifend et leo a, volutpat varius augue. Nullam sed lorem mollis, ornare mi vel, imperdiet sapien. Duis orci sem, eleifend nec orci egestas, luctus sagittis arcu. Fusce accumsan blandit viverra. Vivamus feugiat dolor eu malesuada vestibulum. Sed suscipit commodo nunc. ",
-		votes: 0
+		votes: 5
 	},
 	{
 		id: 2,
@@ -70,7 +77,7 @@ const questions = [
 		meetup: 1, // represents the meetup the question is for
 		title: "question 3",
 		body: "Suspendisse potenti. Phasellus vel ullamcorper massa, eget tincidunt tellus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis non egestas tortor. Sed fermentum sodales est, ut fringilla diam aliquam vitae. Praesent aliquet interdum pellentesque. Pellentesque vel sagittis nunc. In tortor purus, pharetra facilisis faucibus sit amet, lobortis quis eros. Proin eget ligula dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur quam libero, maximus at orci at, viverra condimentum quam. Donec sed mauris congue, egestas ligula sit amet, tincidunt enim. Ut tincidunt, ex eu iaculis pharetra, nisl est sagittis ante, eu dignissim erat odio sit amet tellus. In euismod a urna eu rhoncus. Donec tincidunt sagittis ipsum in cursus. Mauris tincidunt nulla non auctor lobortis. ",
-		votes: 0
+		votes: 10
 	},
 	{
 		id: 4,
@@ -103,15 +110,24 @@ const questions = [
 
 
 app.get('/api/v1/meetup', (req, res) => {
-	res.send(meetups);
+	if (meetups.length === 0) res.status(404).send('no meetup found');
+	return res.send({
+		status: 200,
+		data: [meetups]
+	});
 });
 
 
 app.get('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	res.send(meetup);
+
+	return res.send({
+		status: 200,
+		data: meetup
+	});
 });
+
 
 app.post('/api/v1/meetup', (req, res) => {
 	const meetup = {
@@ -121,32 +137,70 @@ app.post('/api/v1/meetup', (req, res) => {
 		images: req.body.image,
 		topic: req.body.topic,
 		happeningOn: req.body.happeningOn,
-		Tags: req.body.Tags
-	}
+		tags: req.body.tags
+	};
 
 	meetups.push(meetup);
-	res.send(meetup);
+	return res.send({
+			statu: 200,
+			data: meetup
+	});
 });
+
 
 app.put('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	meetup.location = req.body.location,
-	meetup.image = req.body.image,
-	meetup.topic = req.body.topic,
-	meetup.happeningOn = req.body.happeningOn,
-	meetup.Tags = req.body.Tags
-	res.send(meetup);
+	meetup.location = req.body.location;
+	meetup.image = req.body.image;
+	meetup.topic = req.body.topic;
+	meetup.happeningOn = req.body.happeningOn;
+	meetup.tags = req.body.tags;
+	return res.send({
+			statu: 200,
+			data: meetup
+	});
 });
+
 
 app.delete('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
 	const index = meetups.indexOf(meetup);
 	meetups.splice(index, 1);
-
-	res.send(meetup);
+	return res.send({
+				statu: 200,
+				data: meetup
+	});
 });
+
+app.get('/api/v1/upcoming', (req, res) => {
+		const upcoming = [];
+		const current = moment().unix();
+	for (let i = 0; i < meetups.length; i++) {
+		let happen = meetups[i].happeningOn;
+		happen = happen.split("/");
+		happen = happen[1] +"/" + happen[0] +"/" +happen[2];
+		happen = new Date(happen).getTime();
+		happen = happen / 1000;
+
+		if (current <= happen){
+			upcoming.push(meetups[i]);
+		}
+	}
+
+	if (upcoming.length > 0){
+		return res.status(200).send({
+		status: 200,
+		data: upcoming
+	});
+	}
+		return res.status(404).send({
+		status: 404,
+		error: "No upcoming event"
+	});
+});
+
 
 app.get('/api/v1/question', (req, res) => {
 	res.send(questions);
@@ -166,6 +220,18 @@ app.post('/api/v1/question', (req, res) => {
 	res.send(question);
 });
 
+app.patch('/api/v1/question/:id/downvote', (req, res) => {
+	const question = questions.find(m => m.id === parseInt(req.params.id));
+	question.votes = question.votes - 1,
+	res.send(question);
+});
+
+app.patch('/api/v1/question/:id/upvote', (req, res) => {
+	const question = questions.find(m => m.id === parseInt(req.params.id));
+	question.votes = question.votes + 1,
+	res.send(question);
+});
+
 const rsvp = [];
 
 app.post('/api/v1/rsvp', (req, res) => {
@@ -178,6 +244,60 @@ app.post('/api/v1/rsvp', (req, res) => {
 
 	rsvp.push(singleRsvp);
 	res.send(singleRsvp);
+});
+
+const users = [
+	{
+		id: 1,
+		firstname: 'fridolin',
+		lastname: 'niyonsaba',
+		othername: 'fridz',
+		email: 'fridolinho@gmail.com',
+		phoneNumber: '0788232369',
+		username: 'fridolinho',
+		registered: 'january 1, 2019',
+		isAdmin: "yes"
+	},
+	{
+		id: 2,
+		firstname: 'eric',
+		lastname: 'nbgirababyeyi',
+		othername: 'ngira',
+		email: 'eric@gmail.com',
+		phoneNumber: '0788716711',
+		username: 'eric.ngira',
+		registered: 'january 1, 2019',
+		isAdmin: "non"
+	}
+];
+
+app.post('/api/v1/user', (req, res) => {
+	const user = {
+		id: users.length + 1,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		othername: req.body.othername,
+		email: req.body.email,
+		phoneNumber: req.body.phoneNumber,
+		username: req.body.username,
+		registered: moment().format('LL'),
+		isAdmin: "no"
+	}
+
+	users.push(user);
+	res.send(user);
+});
+
+app.get('/api/v1/user', (req, res) => {
+	const email = req.body.email;
+	const logUser = [];
+	for (let i = 0; i < users.length; i++){
+		if (users[i].email === email) {	
+			logUser.push(users[i]);
+		}
+	}
+		if (logUser.length !== 1) res.status(404).send(`User not found`);
+	res.send(logUser);
 });
 
 
