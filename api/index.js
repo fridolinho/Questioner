@@ -202,7 +202,7 @@ const users = [
 		phoneNumber: '0788716711',
 		username: 'eric.ngira',
 		registered: 'january 1, 2019',
-		isAdmin: "no"
+		isAdmin: "non"
 	}
 ];
 
