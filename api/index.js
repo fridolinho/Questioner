@@ -10,7 +10,7 @@ const meetups = [
 		location: 'Kigali heights',
 		images: 'img/meetup.png',
 		topic: 'meetup object 1',
-		happeningOn: '13/01/2019',
+		happeningOn: '01/01/2019',
 		Tags: 'javascript, nodejs',
 
 	},
@@ -44,7 +44,7 @@ const meetups = [
 		location: 'Hilltop hotel',
 		images: 'img/meetup3.png',
 		topic: 'meetup object 4',
-		happeningOn: '30/02/2019',
+		happeningOn: '03/01/2019',
 		Tags: 'javascript, nodejs'
 
 	}
@@ -167,16 +167,38 @@ app.delete('/api/v1/meetup/:id', (req, res) => {
 })
 
 app.get('/api/v1/upcoming', (req, res) => {
+		const upcoming = [];
 		const current = moment().unix();
 	for (let i = 0; i < meetups.length; i ++){
-		const happen = meetups[i].happeningOn;
-		console.log(happen);
+		let happen = meetups[i].happeningOn;
+		happen=happen.split("/");
+		happen=happen[1]+"/"+happen[0]+"/"+happen[2];
+		happen = new Date(happen).getTime(); 
+		happen = happen/1000;
+
+		if (current <= happen){
+			upcoming.push(meetups[i])
+		}	
+
 	}
+
+	if (upcoming.length > 0){
+		return res.status(200).send({
+		status: 200,
+		data:upcoming
+	});	
+	} 
+		return res.status(404).send({
+		status: 404,
+		error: "No upcoming event"
+	});	
+	
+
 
 
 	
+	retu
 })
-
 
 
 app.get('/api/v1/question', (req, res) => {
