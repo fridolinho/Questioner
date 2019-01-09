@@ -10,7 +10,7 @@
     "node": "10.15.0"
   },
   "scripts": {
-        "start": "node server.js"
+        "start": "node index.js"
 },
 
   "scripts": {
