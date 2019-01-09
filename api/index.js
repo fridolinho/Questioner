@@ -11,7 +11,7 @@ const meetups = [
 		images: 'img/meetup.png',
 		topic: 'meetup object 1',
 		happeningOn: '01/01/2019',
-		Tags: 'javascript, nodejs',
+		tags: 'javascript, nodejs',
 
 	},
 	{
@@ -22,7 +22,7 @@ const meetups = [
 		images: 'img/meetup1.png',
 		topic: 'meetup object 2',
 		happeningOn: '15/01/2019',
-		Tags: 'javascript, nodejs'
+		tags: 'javascript, nodejs'
 
 	},
 	{
@@ -34,7 +34,7 @@ const meetups = [
 		images: 'img/meetup2.png',
 		topic: 'meetup object 3',
 		happeningOn: '23/01/2019',
-		Tags: 'javascript, nodejs'
+		tags: 'javascript, nodejs'
 
 	},
 	{
@@ -45,7 +45,7 @@ const meetups = [
 		images: 'img/meetup3.png',
 		topic: 'meetup object 4',
 		happeningOn: '03/01/2019',
-		Tags: 'javascript, nodejs'
+		tags: 'javascript, nodejs'
 
 	}
 ]
@@ -110,15 +110,23 @@ const questions = [
 
 
 app.get('/api/v1/meetup', (req, res) => {
-	res.send(meetups);
+	if (meetups.length === 0) res.status(404).send('no meetup found');
+	return res.send({
+		status: 200,
+		data: [meetups]
+	});
 });
 
 
-app.get('/api/v1/meetup/:id', (req,res) =>{
-	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
-	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	res.send(meetup);
-})
+app.get('/api/v1/meetup/:id', (req, res) => {
+	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
+	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+
+	return res.send({
+		status: 200,
+		data: meetup
+	});
+});
 
 
 app.post('/api/v1/meetup', (req, res) => {
@@ -129,70 +137,69 @@ app.post('/api/v1/meetup', (req, res) => {
 		images: req.body.image,
 		topic: req.body.topic,
 		happeningOn: req.body.happeningOn,
-		Tags:req.body.Tags
-	}
+		tags: req.body.tags
+	};
 
 	meetups.push(meetup);
-	res.send(meetup);
-})
-
-app.put('/api/v1/meetup/:id', (req,res)=>{
-	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
-	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	return res.send({
+			statu: 200,
+			data: meetup
+	});
 });
+
 
 app.put('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	meetup.location = req.body.location,
-	meetup.image = req.body.image,
-	meetup.topic = req.body.topic,
-	meetup.happeningOn = req.body.happeningOn,
-	meetup.Tags = req.body.Tags
-	res.send(meetup);
-})
-
-app.delete('/api/v1/meetup/:id', (req,res)=>{
-	const meetup = meetups.find(m=>m.id === parseInt(req.params.id));
-	if(!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	meetup.location = req.body.location;
+	meetup.image = req.body.image;
+	meetup.topic = req.body.topic;
+	meetup.happeningOn = req.body.happeningOn;
+	meetup.tags = req.body.tags;
+	return res.send({
+			statu: 200,
+			data: meetup
+	});
 });
+
 
 app.delete('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
 	const index = meetups.indexOf(meetup);
 	meetups.splice(index, 1);
-
-	res.send(meetup);
-})
+	return res.send({
+				statu: 200,
+				data: meetup
+	});
+});
 
 app.get('/api/v1/upcoming', (req, res) => {
 		const upcoming = [];
 		const current = moment().unix();
-	for (let i = 0; i < meetups.length; i ++){
+	for (let i = 0; i < meetups.length; i++) {
 		let happen = meetups[i].happeningOn;
-		happen=happen.split("/");
-		happen=happen[1]+"/"+happen[0]+"/"+happen[2];
-		happen = new Date(happen).getTime(); 
-		happen = happen/1000;
+		happen = happen.split("/");
+		happen = happen[1] +"/" + happen[0] +"/" +happen[2];
+		happen = new Date(happen).getTime();
+		happen = happen / 1000;
 
 		if (current <= happen){
-			upcoming.push(meetups[i])
+			upcoming.push(meetups[i]);
 		}
 	}
 
 	if (upcoming.length > 0){
 		return res.status(200).send({
 		status: 200,
-		data:upcoming
-	});	
-	} 
+		data: upcoming
+	});
+	}
 		return res.status(404).send({
 		status: 404,
 		error: "No upcoming event"
-	});	
-	
-})
+	});
+});
 
 
 app.get('/api/v1/question', (req, res) => {
@@ -224,16 +231,6 @@ app.patch('/api/v1/question/:id/upvote', (req, res) => {
 	question.votes = question.votes + 1,
 	res.send(question);
 });
-
-
-app.get('/api/v1/fridolin', (res,req, next)=>{
-
-
-	res.send("fridolin");
-	next();
-
-});
-
 
 const rsvp = [];
 
