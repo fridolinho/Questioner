@@ -246,6 +246,60 @@ app.post('/api/v1/rsvp', (req, res) => {
 	res.send(singleRsvp);
 });
 
+const users = [
+	{
+		id: 1,
+		firstname: 'fridolin',
+		lastname: 'niyonsaba',
+		othername: 'fridz',
+		email: 'fridolinho@gmail.com',
+		phoneNumber: '0788232369',
+		username: 'fridolinho',
+		registered: 'january 1, 2019',
+		isAdmin: "yes"
+	},
+	{
+		id: 2,
+		firstname: 'eric',
+		lastname: 'nbgirababyeyi',
+		othername: 'ngira',
+		email: 'eric@gmail.com',
+		phoneNumber: '0788716711',
+		username: 'eric.ngira',
+		registered: 'january 1, 2019',
+		isAdmin: "non"
+	}
+];
+
+app.post('/api/v1/user', (req, res) => {
+	const user = {
+		id: users.length + 1,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		othername: req.body.othername,
+		email: req.body.email,
+		phoneNumber: req.body.phoneNumber,
+		username: req.body.username,
+		registered: moment().format('LL'),
+		isAdmin: "no"
+	}
+
+	users.push(user);
+	res.send(user);
+});
+
+app.get('/api/v1/user', (req, res) => {
+	const email = req.body.email;
+	const logUser = [];
+	for (let i = 0; i < users.length; i++){
+		if (users[i].email === email) {	
+			logUser.push(users[i]);
+		}
+	}
+		if (logUser.length !== 1) res.status(404).send(`User not found`);
+	res.send(logUser);
+});
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening to port ${port}...`));
