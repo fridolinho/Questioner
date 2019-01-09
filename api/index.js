@@ -271,6 +271,10 @@ const users = [
 	}
 ];
 
+app.get('/', (req, res) =>  {
+	res.send('Welcome to my questioner app');
+});
+
 app.post('/api/v1/user', (req, res) => {
 	const user = {
 		id: users.length + 1,
