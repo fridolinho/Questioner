@@ -10,8 +10,7 @@
     "node": "10.15.0"
   },
   "scripts": {
-    "test": "mocha nyc --reporter=text --timeout 10000 --exit",
-    "coveralls": "nyc report --reporte=text-lcov || coveralls"
+    "test": "mocha --timeout 10000 --exit"
   },
   "repository": {
     "type": "git",
