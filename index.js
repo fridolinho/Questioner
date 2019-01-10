@@ -59,7 +59,6 @@ app.get('/api/v1/meetup', (req, res) => {
 	});
 });
 
-
 app.get('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup){
@@ -87,8 +86,6 @@ app.post('/api/v1/meetup', (req, res) => {
 	res.send(meetup);
 });
 
-
-
 app.put('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
@@ -102,7 +99,6 @@ app.put('/api/v1/meetup/:id', (req, res) => {
 			data: meetup
 	});
 });
-
 
 app.delete('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
@@ -202,7 +198,7 @@ const questions = [
 app.post('/api/v1/question', (req, res) => {
 	const question = {
 		id: questions.length + 1,
-		createdOn: req.body.createdOn,
+		createdOn: Date(),
 		createdBy: req.body.createdBy,
 		meetup: req.body.meetup,
 		title: req.body.title,
@@ -275,9 +271,10 @@ app.post('/api/v1/user', (req, res) => {
 		email: req.body.email,
 		phoneNumber: req.body.phoneNumber,
 		username: req.body.username,
-		registered: moment().format('LL'),
+		registered: Date(),
 		isAdmin: "no"
 	}
+	console.log(user.registered);
 
 	users.push(user);
 	res.send(user);
@@ -286,8 +283,8 @@ app.post('/api/v1/user', (req, res) => {
 app.get('/api/v1/user', (req, res) => {
 	const email = req.body.email;
 	const logUser = [];
-	for (let i = 0; i < users.length; i++){
-		if (users[i].email === email) {	
+	for (let i = 0; i < users.length; i++) {
+		if (users[i].email === email) {
 			logUser.push(users[i]);
 		}
 	}

@@ -4,7 +4,7 @@
   "description": "Questioner helps the meetup organizer prioritize questions to be answered. Other users can vote on asked questions and they bubble to the top or bottom of the log.",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "test --timeout 10000 --exit"
   },
   "engines": {
     "node": "10.15.0"
@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/fridolinho/Questioner#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "coveralls": "^3.0.2",
+    "express": "^4.16.4",
+    "nyc": "^13.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

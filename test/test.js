@@ -21,10 +21,9 @@ describe('GET all meetups', () => {
 		.get('/api/v1/meetup')
 
 		.end((err, res) => {
-            console.log(res.body);
 			res.should.have.status(200);
 			res.body.should.be.a('object');
 			done();
 		});
 	});
-})
+});
