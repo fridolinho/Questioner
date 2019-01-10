@@ -1,10 +1,9 @@
 const express = require('express');
-const moment = require('moment');
 const app = express();
 app.use(express.json());
 
 
-app.get('/', (req, res) =>  {
+app.get('/', (req, res) => {
 	res.send('Welcome to my questioner app');
 });
 
@@ -36,7 +35,7 @@ const meetups = [
 		location: 'Kigali convetion center',
 		image: 'img/meetup2.png',
 		topic: 'meetup object 3',
-		happeningOn: '23/01/2019',
+		happeningOn: '03/01/2019',
 		tags: 'javascript, nodejs'
 
 	},
@@ -52,10 +51,6 @@ const meetups = [
 	}
 ];
 
-
-
-
-
 app.get('/api/v1/meetup', (req, res) => {
 	if (meetups.length === 0) res.status(404).send('no meetup found');
 	return res.send({
@@ -69,12 +64,12 @@ app.get('/api/v1/meetup/:id', (req, res) => {
 	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
 	if (!meetup){
 		res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
-	} else{
+} else {
 		res.send({
 		status: 200,
 		data: meetup
 	});
-	}	
+	}
 });
 
 app.post('/api/v1/meetup', (req, res) => {
@@ -115,20 +110,22 @@ app.delete('/api/v1/meetup/:id', (req, res) => {
 	const index = meetups.indexOf(meetup);
 	meetups.splice(index, 1);
 	return res.send({
-				statu: 200,
+				status: 200,
 				data: meetup
 	});
 });
 
 app.get('/api/v1/upcoming', (req, res) => {
 		const upcoming = [];
-		const current = moment().unix();
+		let current = new Date();
+		current = current.getTime();
+		console.log(current);
 	for (let i = 0; i < meetups.length; i++) {
 		let happen = meetups[i].happeningOn;
 		happen = happen.split("/");
 		happen = happen[1] +"/" + happen[0] +"/" +happen[2];
 		happen = new Date(happen).getTime();
-		happen = happen / 1000;
+		happen = happen;
 
 		if (current <= happen){
 			upcoming.push(meetups[i]);
