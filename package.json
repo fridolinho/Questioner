@@ -4,13 +4,13 @@
   "description": "Questioner helps the meetup organizer prioritize questions to be answered. Other users can vote on asked questions and they bubble to the top or bottom of the log.",
   "main": "index.js",
   "directories": {
-    "test": "test --timeout 10000 --exit"
+    "test": "test"
   },
   "engines": {
     "node": "10.15.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha  --timeout 10000 --exit"
   },
   "repository": {
     "type": "git",
