@@ -124,7 +124,6 @@ app.get('/api/v1/upcoming', (req, res) => {
 		happen = happen.split("/");
 		happen = happen[1] +"/" + happen[0] +"/" +happen[2];
 		happen = new Date(happen).getTime();
-		happen = happen;
 
 		if (current <= happen){
 			upcoming.push(meetups[i]);
