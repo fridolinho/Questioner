@@ -119,7 +119,6 @@ app.get('/api/v1/upcoming', (req, res) => {
 		const upcoming = [];
 		let current = new Date();
 		current = current.getTime();
-		console.log(current);
 	for (let i = 0; i < meetups.length; i++) {
 		let happen = meetups[i].happeningOn;
 		happen = happen.split("/");
