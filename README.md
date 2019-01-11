@@ -1,2 +1,2 @@
-# Questioner [![Build Status](https://travis-ci.org/fridolinho/Questioner.svg?branch=develop)](https://travis-ci.org/fridolinho/Questioner)
+# Questioner [![Build Status](https://travis-ci.org/fridolinho/Questioner.svg?branch=develop)](https://travis-ci.org/fridolinho/Questioner) [![Coverage Status](https://coveralls.io/repos/github/fridolinho/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/fridolinho/Questioner?branch=develop)
 Questioner helps the meetup organizer prioritize questions to be answered. Other users can vote on asked questions and they bubble to the top or bottom of the log.
