@@ -160,7 +160,7 @@ app.post('/api/v1/meetup/:meetupId/rsvp', (req, res) => {
 	if (!meetup) {
 		return res.status(404).send({
 		status: 404,
-		error: `event with ID ${singleRsvp.meetup} not found`
+		error: `Meetup with ID ${singleRsvp.meetup} not found`
 	});
 	} 
 		rsvp.push(singleRsvp);
@@ -227,35 +227,62 @@ const questions = [
 	}
 ];
 
-app.post('/api/v1/question', (req, res) => {
+app.post('/api/v1/:meetupId/question', (req, res) => {
 	const question = {
 		id: questions.length + 1,
 		createdOn: Date(),
 		createdBy: req.body.createdBy,
-		meetup: req.body.meetup,
+		meetup: req.params.meetupId,
 		title: req.body.title,
-		body: req.body.body
+		body: req.body.body,
+		votes: 0
 	}
-
-	questions.push(question);
-	res.send(question);
+	const meetup = meetups.find(m => m.id === parseInt(req.params.meetupId));
+	if (!meetup) {
+		return res.send({
+		status: 404,
+		error: `Meetup with ID ${req.params.meetupId} not found`
+	});
+	} 
+		questions.push(question);
+		return res.send({
+		status: 200,
+		data: question
+	});
 });
 
 
 app.patch('/api/v1/question/:id/downvote', (req, res) => {
 	const question = questions.find(m => m.id === parseInt(req.params.id));
-	question.votes = question.votes - 1,
-	res.send(question);
+	if (!question) {
+		return res.send({
+		status: 404,
+		error: `Question with ID ${req.params.id} not found`
+	});
+	}
+	const nvotes = question.votes;
+	question.votes = nvotes - 1;
+	return res.send({
+		status: 200,
+		data: question
+	});
 });
 
 app.patch('/api/v1/question/:id/upvote', (req, res) => {
 	const question = questions.find(m => m.id === parseInt(req.params.id));
-	question.votes = question.votes + 1,
-	res.send(question);
+	if (!question) {
+		return res.send({
+		status: 404,
+		error: `Question with ID ${req.params.id} not found`
+	});
+	}
+	const nvotes = question.votes;
+	question.votes = nvotes + 1;
+	return res.send({
+		status: 200,
+		data: question
+	});
 });
-
-
-
 
 const users = [
 	{
@@ -294,10 +321,18 @@ app.post('/api/v1/user', (req, res) => {
 		registered: Date(),
 		isAdmin: "no"
 	}
-	console.log(user.registered);
 
-	users.push(user);
-	res.send(user);
+	if (users.push(user)) {
+		console.log(user.registered);
+		return res.send({
+			status: 200,
+			data: user
+		});
+	}
+		return res.send({
+			status: 404,
+			error: "User not registered"
+		});	
 });
 
 app.get('/api/v1/user', (req, res) => {
@@ -308,8 +343,16 @@ app.get('/api/v1/user', (req, res) => {
 			logUser.push(users[i]);
 		}
 	}
-		if (logUser.length !== 1) res.status(404).send(`User not found`);
-	res.send(logUser);
+		if (logUser.length !== 1) {
+			return res.send({
+				status: 404,
+				error: "User not found"
+			})
+		}
+		return res.send({
+			status: 200,
+			data: logUser
+		});
 });
 
 
