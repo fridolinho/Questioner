@@ -150,19 +150,20 @@ app.get('/api/v1/upcomingMeetup', (req, res) => {
 const rsvp = [];
 
 app.post('/api/v1/meetup/:meetupId/rsvp', (req, res) => {
-	const singleRsvp = {
-		id: rsvp.length + 1,
-		user: req.body.user,
-		meetup: parseInt(req.params.meetupId),
-		response: req.body.response
-	}
 	const meetup = meetups.find(m => m.id === parseInt(req.params.meetupId));
 	if (!meetup) {
 		return res.status(404).send({
 		status: 404,
 		error: `Meetup with ID ${singleRsvp.meetup} not found`
 	});
-	} 
+	}  
+
+	const singleRsvp = {
+		id: rsvp.length + 1,
+		user: req.body.user,
+		topic: meetup.topic,
+		status: req.body.status
+	}
 		rsvp.push(singleRsvp);
 		return res.send({
 		status: 201,

@@ -16,56 +16,87 @@
 			<div class="clear"></div>
 		</div>
 		<div id="meetup">
+			<button onclick="newMeetup()">Add meet up</button> <!-- to be seen my the admin only -->
+			<div class="add_meetup" id="new_meetup">
+				<h2>New meetup</h2>
+				<form method="post" action="#" enctype="multipart/form-data">
+					<div class="textbox">
+					<input type="text" name="location" placeholder="location">
+					</div>
+					<div class="textbox">
+					<input type="text" name="topic" placeholder="topic">
+					</div>
+					<div class="textbox">
+					<input type="text" name="happening on" placeholder="happening On">
+					</div>
+					<div class="textbox">
+					<input type="text" name="tags" placeholder="tags">
+					</div>					
+					<div class="textbox">
+					<input type="file" name="image" value="add image">
+					</div>
+					<button type="submit" name="add_meetup">Add</button>
+				</form>
+			</div>
 			<h1>Upcoming Meet up</h1>
-			<div class="single_meetup">	
-			<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>			
+			<div class="single_meetup">				
 				<img src="images/meetup.png">
-				<a href="single_meetup.html"><p>Meet up 1</p></a>
-				<p>7 questions</p>
+				<p><a href="single_meetup.html">Meet up 1</a> | 7 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup2.png">
-				<a href="single_meetup.html"><p>Meet up 2</p></a>
-				<p>4 questions</p>				
+				<p><a href="single_meetup.html">Meet up 2</a> | 4 questions</p>	
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>			
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup3.png">
-				<a href="single_meetup.html"><p>Meet up 3</p></a>
-				<p>1 question</p>
-				</a>
+				<p><a href="single_meetup.html">Meet up 3 </a> | 1 question</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup4.png">
-				<a href="single_meetup.html"><p>Meet up 4</p></a>
-				<p>3 questions</p>
+				<p><a href="single_meetup.html">Meet up 4 </a> | 3 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 				</a>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup.png">
-				<a href="single_meetup.html"><p>Meet up 5</p></a>
-				<p>7 questions</p>
+				<p><a href="single_meetup.html">Meet up 5</a> |	7 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 				</a>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup2.png">
-				<a href="single_meetup.html"><p>Meet up 6</p></a>
-				<p>2 questions</p>
+				<p><a href="single_meetup.html">Meet up 6 </a> | 2 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 				</a>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup3.png">
-				<a href="single_meetup.html"><p>Meet up 7</p></a>
-				<p>2 questions</p>
+				<p><a href="single_meetup.html">Meet up 7 </a> | 2 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 				</a>
 			</div>
 			<div class="single_meetup">
 				<img src="images/meetup4.png">
-				<a href="single_meetup.html"><p>Meet up 8</p></a>
-				<p>3 questions</p>
+				<p><a href="single_meetup.html">Meet up 8 </a> | 3 questions</p>
+				<div class="delete-meetup"><i class="fa fa-trash" alt="delete a meetup"></i></div>
 				</a>
 			</div>
 		</div>
 	</div>
 <footer><p>Copyright - Fridolin &copy; 2018</p></footer>
+<script>
+function newMeetup() {
+  var x = document.getElementById("new_meetup");
+  if (x.style.display != "block") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+}
+};
+
+</script>
 </body>
 </html>

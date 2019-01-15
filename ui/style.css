@@ -177,7 +177,49 @@ footer p {
 .delete-meetup {
 	color: red;
 	position: relative;
-	top: 0;
-	left: 0;
+	bottom: 0;
+	right: 0;
 	cursor: pointer;
+}
+.textbox {
+	width: 100%;
+	overflow: hidden;
+}
+
+.textbox input[type="text"] {
+	border: none;
+	background-color:  #90caf9;
+	padding: 5px 20px;
+	color: white;
+	border-bottom: 1px solid white;
+	margin-bottom: 15px;
+}
+
+.textbox input[type="file"] {
+	border-bottom: 1px solid white;
+	margin-bottom: 15px;
+	color: white;
+}
+.add_meetup {
+	padding: 20px 30px;
+	border-radius: 20px;
+	background-color: #90caf9;
+	width: 250px;
+	position: fixed;
+	left: 50%;
+}
+
+.add_meetup h2 {
+	color: white;
+}
+
+#new_meetup {
+	display: none;
+}
+.ask_question textarea {
+	width: 300px;
+}
+
+.comment textarea {
+	width: 300px;
 }
