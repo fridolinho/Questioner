@@ -1,11 +1,55 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
-const meetups = require('controller/meetup.js')
 
 app.get('/', (req, res) => {
 	res.send('Welcome to my questioner app');
 });
+
+const meetups = [
+	{
+		id: 1,
+		createdOn: '12/12/2018',
+		location: 'Kigali heights',
+		image: 'img/meetup.png',
+		topic: 'meetup object 1',
+		happeningOn: '13/01/2019',
+		tags: 'javascript, nodejs',
+
+	},
+	{
+		id: 2,
+		createdOn: '14/12/2018',
+		location: 'westerwelle',
+		image: 'img/meetup1.png',
+		topic: 'meetup object 2',
+		happeningOn: '15/01/2019',
+		tags: 'javascript, nodejs'
+
+	},
+	{
+
+		id: 3,
+		createdOn: '19/12/2018',
+		location: 'Kigali convetion center',
+		image: 'img/meetup2.png',
+		topic: 'meetup object 3',
+		happeningOn: '03/01/2019',
+		tags: 'javascript, nodejs'
+
+	},
+	{
+		id: 4,
+		createdOn: '22/12/2018',
+		location: 'Hilltop hotel',
+		image: 'img/meetup3.png',
+		topic: 'meetup object 4',
+		happeningOn: '30/02/2019',
+		tags: 'javascript, nodejs'
+
+	}
+];
+
 
 app.get('/api/v1/meetup', (req, res) => {
 	if (meetups.length === 0) res.status(404).send('no meetup found');
@@ -39,7 +83,7 @@ app.post('/api/v1/meetup', (req, res) => {
 	}
 	meetups.push(meetup);
 	return res.send({
-		status: 200,
+		status: 201,
 		data: meetup
 	});	
 });
@@ -121,7 +165,7 @@ app.post('/api/v1/meetup/:meetupId/rsvp', (req, res) => {
 	} 
 		rsvp.push(singleRsvp);
 		return res.send({
-		status: 200,
+		status: 201,
 		data: singleRsvp
 	});
 });
@@ -202,7 +246,7 @@ app.post('/api/v1/:meetupId/question', (req, res) => {
 	} 
 		questions.push(question);
 		return res.send({
-		status: 200,
+		status: 201,
 		data: question
 	});
 });
@@ -219,7 +263,7 @@ app.patch('/api/v1/question/:id/downvote', (req, res) => {
 	const nvotes = question.votes;
 	question.votes = nvotes - 1;
 	return res.send({
-		status: 200,
+		status: 201,
 		data: question
 	});
 });
@@ -235,7 +279,7 @@ app.patch('/api/v1/question/:id/upvote', (req, res) => {
 	const nvotes = question.votes;
 	question.votes = nvotes + 1;
 	return res.send({
-		status: 200,
+		status: 201,
 		data: question
 	});
 });
@@ -281,7 +325,7 @@ app.post('/api/v1/user', (req, res) => {
 	if (users.push(user)) {
 		console.log(user.registered);
 		return res.send({
-			status: 200,
+			status: 201,
 			data: user
 		});
 	}

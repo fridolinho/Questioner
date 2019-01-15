@@ -174,3 +174,10 @@ footer {
 footer p {
 	text-align: center;
 }
+.delete-meetup {
+	color: red;
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+}
