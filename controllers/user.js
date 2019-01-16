@@ -22,4 +22,4 @@ const users = [
 		isAdmin: "non"
 	}
 ];
-export default users;
+module.exports = users;
