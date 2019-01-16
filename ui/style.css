@@ -222,9 +222,9 @@ footer p {
 	margin-left: 20px;
 }
 .ask_question textarea {
-	width: 300px;
+	width: 70%;
 }
 
 .comment textarea {
-	width: 300px;
+	width: 95%;
 }
