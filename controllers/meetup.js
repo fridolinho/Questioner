@@ -1,45 +1,130 @@
-const meetups = [
-	{
-		id: 1,
-		createdOn: '12/12/2018',
-		location: 'Kigali heights',
-		image: 'img/meetup.png',
-		topic: 'meetup object 1',
-		happeningOn: '13/01/2019',
-		tags: 'javascript, nodejs',
+const express = require('express');
+const router = express.Router();
+const meetups = require('../models/meetup');
+const questions = require('../models/question')
 
-	},
-	{
-		id: 2,
-		createdOn: '14/12/2018',
-		location: 'westerwelle',
-		image: 'img/meetup1.png',
-		topic: 'meetup object 2',
-		happeningOn: '15/01/2019',
-		tags: 'javascript, nodejs'
+//Get all meetups
+router.get('/', (req, res) => {
+	if (meetups.length === 0) res.status(404).send('no meetup found');
+	return res.send({
+		status: 200,
+		data: meetups
+	});
+});
 
-	},
-	{
-
-		id: 3,
-		createdOn: '19/12/2018',
-		location: 'Kigali convetion center',
-		image: 'img/meetup2.png',
-		topic: 'meetup object 3',
-		happeningOn: '03/01/2019',
-		tags: 'javascript, nodejs'
-
-	},
-	{
-		id: 4,
-		createdOn: '22/12/2018',
-		location: 'Hilltop hotel',
-		image: 'img/meetup3.png',
-		topic: 'meetup object 4',
-		happeningOn: '30/02/2019',
-		tags: 'javascript, nodejs'
-
+router.get('/:id', (req, res) => {
+	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
+	if (!meetup){
+		res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+} else {
+		res.send({
+		status: 200,
+		data: meetup
+	});
 	}
-];
+});
 
-module.exports = meetups;
+// Create a meetup
+router.post('/', (req, res) => {
+	const meetup = {
+		id: meetups.length + 1,
+		createdOn: Date(),
+		location: req.body.location,
+		image: req.body.image,
+		topic: req.body.topic,
+		happeningOn: req.body.happeningOn,
+		tags: req.body.tags
+	}
+	meetups.push(meetup);
+	return res.send({
+		status: 201,
+		data: meetup
+	});	
+});
+
+//Update a meetup with a given meetup id
+router.put('/:id', (req, res) => {
+	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
+	if (!meetup) res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+	meetup.location = req.body.location;
+	meetup.image = req.body.image;
+	meetup.topic = req.body.topic;
+	meetup.happeningOn = req.body.happeningOn;
+	meetup.tags = req.body.tags;
+	return res.send({
+			status: 200,
+			data: meetup
+	});
+});
+
+//Delete a meetup with a given meetup id
+router.delete('/:id', (req, res) => {
+	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
+	if (!meetup) {
+		return res.send({
+			status: 404,
+			error: `The meetup with ID ${req.params.id} was not found`
+			});
+	} else {
+		const index = meetups.indexOf(meetup);
+		meetups.splice(index, 1);
+		return res.send({
+					status: 200,
+					data: meetup
+		});
+	}
+	
+});
+
+// Respond an rsvp for a meetup
+router.post('/:meetupId/rsvp', (req, res) => {
+	const meetup = meetups.find(m => m.id === parseInt(req.params.meetupId));
+	if (!meetup) {
+		return res.status(404).send({
+		status: 404,
+		error: `Meetup with ID ${singleRsvp.meetup} not found`
+	});
+	} 
+
+	const rsvp = [];
+	const singleRsvp = {
+		id: rsvp.length + 1,
+		user: req.body.user,
+		topic: meetup.topic,
+		status: req.body.status
+	}
+		rsvp.push(singleRsvp);
+		return res.send({
+		status: 201,
+		data: singleRsvp
+	});
+});
+
+// Ask question on a specific meetup with given meetup Id
+router.post('/:meetupId/question', (req, res) => {
+	const question = {
+		id: questions.length + 1,
+		createdOn: Date(),
+		createdBy: req.body.createdBy,
+		meetup: req.params.meetupId,
+		title: req.body.title,
+		body: req.body.body,
+		votes: 0,
+		downvotes: 0,
+		upvotes: 0
+	}
+	const meetup = meetups.find(m => m.id === parseInt(req.params.meetupId));
+	if (!meetup) {
+		return res.send({
+		status: 404,
+		error: `Meetup with ID ${req.params.meetupId} not found`
+	});
+	} 
+		questions.push(question);
+		return res.send({
+		status: 201,
+		data: question
+	});
+});
+
+module.exports = router;

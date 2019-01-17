@@ -18,7 +18,7 @@ describe('open the homepage', () => {
 describe('GET all meetups', () => {
 	it('it should GET all the meetups', (done) => {
 		chai.request(server)
-		.get('/api/v1/meetup')
+		.get('/api/v1/meetups')
 
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -29,10 +29,11 @@ describe('GET all meetups', () => {
 	});
 });
 
+
 describe('GET specific meetup', () => {
 	it('it should GET a specific meetup', (done) => {
 		chai.request(server)
-		.get('/api/v1/meetup/1')
+		.get('/api/v1/meetups/1')
 
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -46,7 +47,7 @@ describe('GET specific meetup', () => {
 describe('POST meetup', () => {
 	it('it should POST a meetup', (done) => {
 		chai.request(server)
-		.post('/api/v1/meetup')
+		.post('/api/v1/meetups')
 		.send({
 			location: "Kigali Heights",
 			image: "meetup_test.png",
@@ -67,7 +68,7 @@ describe('POST meetup', () => {
 describe('Update meetup', () => {
 	it('it should update an existing meetup', (done) => {
 		chai.request(server)
-		.put('/api/v1/meetup/2')
+		.put('/api/v1/meetups/2')
 		.send({
 			location: "Kigali Convention Center",
 			image: "meetup_test3.png",
@@ -88,7 +89,7 @@ describe('Update meetup', () => {
 describe('Delete a meetup', () => {
 	it('it should delete an existing meetup', (done) => {
 		chai.request(server)
-		.delete('/api/v1/meetup/2')	
+		.delete('/api/v1/meetups/2')	
 		.end((err, res) => {
 			res.should.have.status(200);
 			res.body.should.be.a('object');
@@ -115,10 +116,10 @@ describe('GET all upcoming meetups', () => {
 describe('POST rsvp for a meetup', () => {
 	it('it should POST an rsvp for a specific meetup', (done) => {
 		chai.request(server)
-		.post('/api/v1/meetup/3/rsvp')
+		.post('/api/v1/meetups/3/rsvp')
 		.send({
 			user: 1,
-			response: "attending"
+			status: "yes"
 		})		
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -129,10 +130,10 @@ describe('POST rsvp for a meetup', () => {
 	});
 });
 
-describe('POST a qustion for a meetup', () => {
+describe('POST a question for a meetup', () => {
 	it('it should POST a question for a specific meetup', (done) => {
 		chai.request(server)
-		.post('/api/v1/3/question')
+		.post('/api/v1/meetups/3/question')
 		.send({
 			createdBy: 1,
 			body: "attending",
@@ -150,7 +151,7 @@ describe('POST a qustion for a meetup', () => {
 describe('Downvote a question', () => {
 	it('it should Update the votes of a question remove 1', (done) => {
 		chai.request(server)
-		.patch('/api/v1/question/3/downvote')
+		.patch('/api/v1/questions/3/downvote')
 		
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -164,7 +165,7 @@ describe('Downvote a question', () => {
 describe('Upvote a question', () => {
 	it('it should Update the votes of a question plus 1', (done) => {
 		chai.request(server)
-		.patch('/api/v1/question/4/upvote')
+		.patch('/api/v1/questions/4/upvote')
 		
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -178,7 +179,7 @@ describe('Upvote a question', () => {
 describe('Register a user', () => {
 	it('it should POST registered user datas ', (done) => {
 		chai.request(server)
-		.post('/api/v1/user')
+		.post('/api/v1/users')
 		.send({
 			firstname: "Habimana",
 			lastname: "J. paul",
@@ -199,7 +200,7 @@ describe('Register a user', () => {
 describe('login a user', () => {
 	it('it should GET user datas by email', (done) => {
 		chai.request(server)
-		.get('/api/v1/user')
+		.get('/api/v1/users')
 		.send({email: "jphab@gmail.com"})		
 		.end((err, res) => {
 			res.should.have.status(200);

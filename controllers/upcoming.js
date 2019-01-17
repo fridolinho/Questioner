@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const meetups = require('../controllers/meetup')
+const meetups = require('../models/meetup')
 
 //Get Upcoming meetups
 router.get('/', (req, res) => {
