@@ -1,5 +1,2 @@
-const users = [
-
-	
-];
-module.exports = users;
+const users = [];
+export default users;

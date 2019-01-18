@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
+import questions from '../models/question';
 const router = express.Router();
-const questions = require('../models/question')
 
 // Downvote a question
 router.patch('/:id/downvote', (req, res) => {
@@ -36,4 +36,4 @@ router.patch('/:id/upvote', (req, res) => {
 	});
 });
 
-module.exports = router;
+export default router;

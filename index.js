@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
+import meetups from './models/meetup';
+import questions from './models/question';
+import users from './models/user';
+import routeMeetups from './controllers/meetup';
+import routeusers from './controllers/user';
+import routeQuestion from './controllers/question';
 const app = express();
 app.use(express.json());
-const meetups = require('./models/meetup');
-const questions = require('./models/question');
-const users = require('./models/user');
-const routeMeetups = require('./controllers/meetup');
-const routeusers = require('./controllers/user');
-const routeQuestion = require('./controllers/question');
 
 app.use('/api/v1/meetups', routeMeetups);
 app.use('/api/v1/users', routeusers);
@@ -18,4 +18,4 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening to port ${port}...`));
-module.exports = app;
+export default app;

@@ -1,8 +1,8 @@
-const chai = require('chai');
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import server from '../index';
 const should = chai.should();
-const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-const server = require('../index');
 
 describe('open the homepage', () => {
 	it('it should open the homepage', (done) => {
@@ -34,6 +34,46 @@ describe('POST meetup', () => {
 			done();
 		});
 	});
+
+
+	it('it should fail and return 400 error status code', (done) => {
+		chai.request(server)
+		.post('/api/v1/meetups')
+		.send({
+			location: "Kigali Heights",
+			images: "meetup_test.png",
+			topic: "",
+			happeningOn: "02/12/2019",
+			tags: "NodeJS"
+		})
+		
+		.end((err, res) => {
+			res.should.have.status(400);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+
+	it('it should fail and return 400 error status code', (done) => {
+		chai.request(server)
+		.post('/api/v1/meetups')
+		.send({
+			location: "Kigali Heights",
+			images: "meetup_test.png",
+			happeningOn: "02/12/2019",
+			tags: "NodeJS"
+		})
+		
+		.end((err, res) => {
+			res.should.have.status(400);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+
+
 });
 
 describe('GET all meetups', () => {

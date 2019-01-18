@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
+import users from '../models/user';
 const router = express.Router();
-const users = require('../models/user')
 
 //User registration
 router.post('/', (req, res) => {
@@ -50,4 +50,4 @@ router.get('/', (req, res) => {
 		});
 });
 
-module.exports = router;
+export default router;

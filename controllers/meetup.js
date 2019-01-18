@@ -1,9 +1,9 @@
-const express = require('express');
-const Joi = require('joi');
+import express from 'express';
+import Joi from 'joi';
+import meetups from '../models/meetup';
+import questions from '../models/question';
+import rsvp from '../models/rsvp';
 const router = express.Router();
-const meetups = require('../models/meetup');
-const questions = require('../models/question');
-const rsvp = require('../models/rsvp')
 
 
 //Get all meetups
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if(error){
-		return res.send({
+		return res.status(400).send({
 			status: 400,
 			error: error.details[0].message
 		})
@@ -212,4 +212,4 @@ router.post('/:meetupId/question', (req, res) => {
 	
 });
 
-module.exports = router;
+export default router;

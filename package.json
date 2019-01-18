@@ -10,8 +10,8 @@
     "node": "10.15.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node --presets env app",
-    "test": "nyc --reporter=html --reporter=text mocha --timeout 10000 --exit",
+    "start": "nodemon --exec babel-node --presets env index",
+    "test": "nyc --reporter=html --reporter=text mocha --require babel-register --timeout 10000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {

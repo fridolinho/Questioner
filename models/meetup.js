@@ -1,5 +1,2 @@
-const meetups = [
-	
-];
-
-module.exports = meetups;
+const meetups = [];
+export default meetups;

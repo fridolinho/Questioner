@@ -1,5 +1,2 @@
-const questions = [
-	
-];
-
-module.exports = questions;
+const questions = [];
+export default questions;
