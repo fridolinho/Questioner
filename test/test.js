@@ -15,6 +15,27 @@ describe('open the homepage', () => {
 	});
 });
 
+describe('POST meetup', () => {
+	it('it should POST a meetup', (done) => {
+		chai.request(server)
+		.post('/api/v1/meetups')
+		.send({
+			location: "Kigali Heights",
+			images: "meetup_test.png",
+			topic: "javascript for beginner",
+			happeningOn: "02/12/2019",
+			tags: "NodeJS"
+		})
+		
+		.end((err, res) => {
+			res.should.have.status(201);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+});
+
 describe('GET all meetups', () => {
 	it('it should GET all the meetups', (done) => {
 		chai.request(server)
@@ -44,31 +65,12 @@ describe('GET specific meetup', () => {
 	});
 });
 
-describe('POST meetup', () => {
-	it('it should POST a meetup', (done) => {
-		chai.request(server)
-		.post('/api/v1/meetups')
-		.send({
-			location: "Kigali Heights",
-			image: "meetup_test.png",
-			topic: "javascript for beginner",
-			happeningOn: "02/12/2019",
-			tags: "JS"
-		})
-		
-		.end((err, res) => {
-			res.should.have.status(200);
-			res.body.should.be.a('object');
-			console.log(res.body);
-			done();
-		});
-	});
-});
+
 
 describe('Update meetup', () => {
 	it('it should update an existing meetup', (done) => {
 		chai.request(server)
-		.put('/api/v1/meetups/2')
+		.put('/api/v1/meetups/1')
 		.send({
 			location: "Kigali Convention Center",
 			image: "meetup_test3.png",
@@ -86,18 +88,7 @@ describe('Update meetup', () => {
 	});
 });
 
-describe('Delete a meetup', () => {
-	it('it should delete an existing meetup', (done) => {
-		chai.request(server)
-		.delete('/api/v1/meetups/2')	
-		.end((err, res) => {
-			res.should.have.status(200);
-			res.body.should.be.a('object');
-			console.log(res.body);
-			done();
-		});
-	});
-});
+
 
 describe('GET all upcoming meetups', () => {
 	it('it should GET upcoming meetups', (done) => {
@@ -116,7 +107,7 @@ describe('GET all upcoming meetups', () => {
 describe('POST rsvp for a meetup', () => {
 	it('it should POST an rsvp for a specific meetup and return 201 status code', (done) => {
 		chai.request(server)
-		.post('/api/v1/meetups/3/rsvp')
+		.post('/api/v1/meetups/1/rsvp')
 		.send({
 			user: 1,
 			status: "yes"
@@ -130,9 +121,9 @@ describe('POST rsvp for a meetup', () => {
 	});
 
 
-	it('it should no be to POST an rsvp for a specific meetup, and return 400', (done) => {
+	it('it should no be able to POST an rsvp for a specific meetup, and return 400 status code', (done) => {
 		chai.request(server)
-		.post('/api/v1/meetups/3/rsvp')
+		.post('/api/v1/meetups/1/rsvp')
 		.send({
 			user: 1,
 			status: ""
@@ -145,13 +136,25 @@ describe('POST rsvp for a meetup', () => {
 		});
 	});
 
-	
+	it('it should fail, and return 400 error status', (done) => {
+		chai.request(server)
+		.post('/api/v1/meetups/1/rsvp')
+		.send({
+			user: 1
+		})		
+		.end((err, res) => {
+			res.should.have.status(400);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
 });
 
 describe('POST a question for a meetup', () => {
 	it('it should POST a question for a specific meetup', (done) => {
 		chai.request(server)
-		.post('/api/v1/meetups/3/question')
+		.post('/api/v1/meetups/1/question')
 		.send({
 			createdBy: 1,
 			body: "attending",
@@ -166,10 +169,12 @@ describe('POST a question for a meetup', () => {
 	});
 });
 
+
+
 describe('Downvote a question', () => {
 	it('it should Update the votes of a question remove 1', (done) => {
 		chai.request(server)
-		.patch('/api/v1/questions/3/downvote')
+		.patch('/api/v1/questions/1/downvote')
 		
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -183,8 +188,21 @@ describe('Downvote a question', () => {
 describe('Upvote a question', () => {
 	it('it should Update the votes of a question plus 1', (done) => {
 		chai.request(server)
-		.patch('/api/v1/questions/4/upvote')
+		.patch('/api/v1/questions/1/upvote')
 		
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+});
+
+describe('Delete a meetup', () => {
+	it('it should delete an existing meetup', (done) => {
+		chai.request(server)
+		.delete('/api/v1/meetups/1')	
 		.end((err, res) => {
 			res.should.have.status(200);
 			res.body.should.be.a('object');
