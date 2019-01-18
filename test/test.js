@@ -102,7 +102,7 @@ describe('Delete a meetup', () => {
 describe('GET all upcoming meetups', () => {
 	it('it should GET upcoming meetups', (done) => {
 		chai.request(server)
-		.get('/api/v1/upcomingMeetup')
+		.get('/api/v1/meetups/upcoming')
 
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -114,7 +114,7 @@ describe('GET all upcoming meetups', () => {
 });
 
 describe('POST rsvp for a meetup', () => {
-	it('it should POST an rsvp for a specific meetup', (done) => {
+	it('it should POST an rsvp for a specific meetup and return 201 status code', (done) => {
 		chai.request(server)
 		.post('/api/v1/meetups/3/rsvp')
 		.send({
@@ -122,12 +122,30 @@ describe('POST rsvp for a meetup', () => {
 			status: "yes"
 		})		
 		.end((err, res) => {
-			res.should.have.status(200);
+			res.should.have.status(201);
 			res.body.should.be.a('object');
 			console.log(res.body);
 			done();
 		});
 	});
+
+
+	it('it should no be to POST an rsvp for a specific meetup, and return 400', (done) => {
+		chai.request(server)
+		.post('/api/v1/meetups/3/rsvp')
+		.send({
+			user: 1,
+			status: ""
+		})		
+		.end((err, res) => {
+			res.should.have.status(400);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+
+	
 });
 
 describe('POST a question for a meetup', () => {
@@ -140,7 +158,7 @@ describe('POST a question for a meetup', () => {
 			title: "test"
 		})		
 		.end((err, res) => {
-			res.should.have.status(200);
+			res.should.have.status(201);
 			res.body.should.be.a('object');
 			console.log(res.body);
 			done();

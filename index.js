@@ -6,12 +6,10 @@ const questions = require('./models/question');
 const users = require('./models/user');
 const routeMeetups = require('./controllers/meetup');
 const routeusers = require('./controllers/user');
-const upcoming = require('./controllers/upcoming');
 const routeQuestion = require('./controllers/question');
 
 app.use('/api/v1/meetups', routeMeetups);
 app.use('/api/v1/users', routeusers);
-app.use('/api/v1/upcomingMeetup', upcoming);
 app.use('/api/v1/questions', routeQuestion);
 
 app.get('/', (req, res) => {

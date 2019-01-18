@@ -10,6 +10,7 @@
     "node": "10.15.0"
   },
   "scripts": {
+    "start": "nodemon --exec babel-node --presets env app",
     "test": "nyc --reporter=html --reporter=text mocha --timeout 10000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -25,6 +26,9 @@
   },
   "homepage": "https://github.com/fridolinho/Questioner#readme",
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "coveralls": "^3.0.2",
     "express": "^4.16.4",
     "joi": "^14.3.1",
@@ -32,6 +36,7 @@
     "nyc": "^13.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "eslint": "^5.12.0",

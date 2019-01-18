@@ -12,7 +12,7 @@ router.patch('/:id/downvote', (req, res) => {
 	});
 	}
 	question.votes = question.votes + 1;
-	question.downvote = question.downvote - 1
+	question.downvote = question.downvote + 1
 	return res.send({
 		status: 201,
 		data: question
