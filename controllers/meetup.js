@@ -175,4 +175,26 @@ router.put('/:id', (req, res) => {
 	});	
 	
 });
+
+//Delete a meetup with a given meetup id
+router.delete('/:id', (req, res) => {
+	const id = parseInt(req.params.id);
+	pool.query('UPDATE meetups')
+	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
+	if (!meetup) {
+		return res.send({
+			status: 404,
+			error: `The meetup with ID ${req.params.id} was not found`
+			});
+	} else {
+		const index = meetups.indexOf(meetup);
+		meetups.splice(index, 1);
+		return res.send({
+					status: 200,
+					data: meetup
+		});
+	}
+	
+});
+
 export default router;
