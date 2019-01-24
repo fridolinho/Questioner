@@ -23,7 +23,7 @@ describe('POST meetup', () => {
 			location: "Kigali Heights",
 			images: "meetup_test.png",
 			topic: "javascript for beginner",
-			happeningOn: "02/12/2019",
+			happeningon: "02/12/2019",
 			tags: "NodeJS"
 		})
 		

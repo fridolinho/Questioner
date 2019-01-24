@@ -1,10 +1,10 @@
 const pool = require('./connect.js');
 
 const deleteTables = () => {
- const usersTable = 'DROP TABLE IF EXISTS users';
- const meetupsTable = 'DROP TABLE IF EXISTS meetups';
- const questionsTable = 'DROP TABLE IF EXISTS questions';
- const rsvpsTable = 'DROP TABLE IF EXISTS rsvp';
+ const usersTable = 'DROP TABLE users IF EXISTS';
+ const meetupsTable = 'DROP TABLE meetups IF EXISTS';
+ const questionsTable = 'DROP TABLE questions IF EXISTS';
+ const rsvpsTable = 'DROP TABLE rsvp IF EXISTS';
 
 
  const dropQueries = `${usersTable}; ${questionsTable}; ${rsvpsTable}; ${meetupsTable};`;
@@ -63,7 +63,7 @@ const createTables = () => {
      )`;
 
  const rsvp = `CREATE TABLE IF NOT EXISTS
-     rsvps(
+     rsvp(
        id SERIAL PRIMARY KEY,
        meetup INT NOT NULL REFERENCES meetups(id),
        “createdBy” INT NOT NULL REFERENCES users(id),

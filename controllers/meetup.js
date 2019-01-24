@@ -133,4 +133,46 @@ router.post('/', (req, res) => {
 	
 });
 
+
+//Update a meetup with a given meetup id
+router.put('/:id', (req, res) => {
+	const id = req.params.id;
+	pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
+		const schema = {
+			location: Joi.string().min(3).required(),
+			images: Joi.string().min(3).required(),
+			topic: Joi.string().min(3).required(),
+			happeningon: Joi.string().min(3).required(),
+			tags: Joi.string().min(3).required()
+		}
+
+		const { error } = Joi.validate(req.body, schema);
+		if (error){
+			return res.status(400).send({
+			status: 400,
+			error: error.details[0].message
+		})
+		}
+
+		if (resp.rows.length === 0){
+		res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+		} else {
+			const meetup = [
+			req.body.location,
+			req.body.images,
+			req.body.topic,
+			req.body.happeningon,
+			req.body.tags,
+			req.params.id
+		]
+			pool.query('UPDATE meetups SET location = $1, images = $2, topic = $3, happeningon = $4, tags = $5 WHERE id = $6 RETURNING *', meetup, (error, result) =>{
+				return res.send({
+						status: 200,
+						data: result.rows
+				});	
+			});			
+		}
+	});	
+	
+});
 export default router;
