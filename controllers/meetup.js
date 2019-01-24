@@ -197,4 +197,46 @@ router.delete('/:id', (req, res) => {
 	
 });
 
+// Respond an rsvp for a meetup
+router.post('/:meetupId/rsvp', (req, res) => {
+
+	let schema = {
+		user: Joi.number().required(),
+		status: Joi.string().min(2).required(),
+	};
+
+	let { error } = Joi.validate(req.body, schema);
+	if(error){
+	return res.status(400).send({
+		status: 400,
+		error: error.details[0].message
+	});
+	} else {
+		const id = req.params.meetupId;
+		pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
+			if (resp.rows.length === 0){
+			res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+			} else  {
+				const rsvp = [
+					req.body.user,
+					resp.rows.topic,
+					req.body.status
+				]
+				pool.query('INSERT INTO rsvps (user, meetup, status) VALUES ($1, $2, $3)', rsvp, (erro, result) =>{
+					if(erro){
+						return res.status(400).send({
+							status: 400,
+							error: erro
+						})
+					} 
+						return res.status(200).send({
+							status: 200,
+						data: resp.rows
+					});
+				});
+			}
+		});
+	}
+	
+});
 export default router;
