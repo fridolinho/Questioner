@@ -94,7 +94,7 @@ describe('GET all meetups', () => {
 describe('GET specific meetup', () => {
 	it('it should GET a specific meetup', (done) => {
 		chai.request(server)
-		.get('/api/v1/meetups/7')
+		.get('/api/v1/meetups/1')
 
 		.end((err, res) => {
 			res.should.have.status(200);
@@ -110,7 +110,7 @@ describe('GET specific meetup', () => {
 describe('Update meetup', () => {
 	it('it should update an existing meetup', (done) => {
 		chai.request(server)
-		.put('/api/v1/meetups/7')
+		.put('/api/v1/meetups/1')
 		.send({
 			location: "Kigali Convention Center",
 			images: "meetuptest.png",
@@ -252,37 +252,37 @@ describe('POST rsvp for a meetup', () => {
 // 	});
 // });
 
-// describe('Register a user', () => {
-// 	it('it should POST registered user datas ', (done) => {
-// 		chai.request(server)
-// 		.post('/api/v1/users')
-// 		.send({
-// 			firstname: "Habimana",
-// 			lastname: "J. paul",
-// 			othername: "kadogo",
-// 			phonenumber: "0788245521",
-// 			email: "jphab@gmail.com",
-// 			username: "habJP"
-// 		})		
-// 		.end((err, res) => {
-// 			res.should.have.status(201);
-// 			res.body.should.be.a('object');
-// 			console.log(res.body);
-// 			done();
-// 		});
-// 	});
-// });
+describe('Register a user', () => {
+	it('it should POST registered user datas ', (done) => {
+		chai.request(server)
+		.post('/api/v1/users')
+		.send({
+			firstname: "Habimana",
+			lastname: "J. paul",
+			othername: "kadogo",
+			phonenumber: "0788245521",
+			email: "jphab@gmail.com",
+			username: "habJP"
+		})		
+		.end((err, res) => {
+			res.should.have.status(201);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+});
 
-// describe('login a user', () => {
-// 	it('it should GET user datas by email', (done) => {
-// 		chai.request(server)
-// 		.get('/api/v1/users')
-// 		.send({email: "jphap@gmail.com"})		
-// 		.end((err, res) => {
-// 			res.should.have.status(200);
-// 			res.body.should.be.a('object');
-// 			console.log(res.body);
-// 			done();
-// 		});
-// 	});
-// });
+describe('login a user', () => {
+	it('it should GET user datas by email', (done) => {
+		chai.request(server)
+		.get('/api/v1/users')
+		.send({email: "fridolinho@gmail.com"})		
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.body.should.be.a('object');
+			console.log(res.body);
+			done();
+		});
+	});
+});
