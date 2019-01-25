@@ -78,7 +78,10 @@ router.get('/:id', (req, res) => {
 	pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
 		const meetup = resp.rows;
 		if (meetup.length === 0){
-		res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+		return res.status(404).send({
+			status: 404,
+			error: `Meetup with Id ${id} doesn't exist`
+		})
 		} else {
 			res.send({
 			status: 200,
@@ -155,7 +158,10 @@ router.put('/:id', (req, res) => {
 		}
 
 		if (resp.rows.length === 0){
-		res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+			return res.status(404).send({
+				status: 404,
+				error: `Meetup with Id ${id} dosen't exist`
+			});
 		} else {
 			const meetup = [
 			req.body.location,
@@ -179,30 +185,38 @@ router.put('/:id', (req, res) => {
 //Delete a meetup with a given meetup id
 router.delete('/:id', (req, res) => {
 	const id = parseInt(req.params.id);
-	pool.query('UPDATE meetups')
-	const meetup = meetups.find(m => m.id === parseInt(req.params.id));
-	if (!meetup) {
-		return res.send({
-			status: 404,
-			error: `The meetup with ID ${req.params.id} was not found`
-			});
-	} else {
-		const index = meetups.indexOf(meetup);
-		meetups.splice(index, 1);
-		return res.send({
-					status: 200,
-					data: meetup
+	pool.query('SELECT * FROM meetups WHERE id = $1', [id], 
+		(err, resp) =>{
+			if(err){
+				res.status(400).send({
+					status: 400,
+					error: err
+				});
+			} else {
+				if (resp.rows.length === 1){
+					pool.query('DELETE FROM meetups WHERE id = $1 RETURNING *', [id], (er, respo) => {
+						return res.status(200).send({
+							status: 200,
+							data: respo.rows
+						});
+					});
+						
+				} else {
+					return res.status(404).send({
+					status: 404,
+					data: `meetup with Id ${id} Not found`
+				});
+				}
+			}
 		});
-	}
-	
-});
+	});
 
 // Respond an rsvp for a meetup
 router.post('/:meetupId/rsvp', (req, res) => {
 
 	let schema = {
-		user: Joi.number().required(),
-		status: Joi.string().min(2).required(),
+		createdby: Joi.number().required(),
+		response: Joi.string().min(2).required(),
 	};
 
 	let { error } = Joi.validate(req.body, schema);
@@ -215,28 +229,102 @@ router.post('/:meetupId/rsvp', (req, res) => {
 		const id = req.params.meetupId;
 		pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
 			if (resp.rows.length === 0){
-			res.status(404).send(`The meetup with ID ${req.params.id} was not found`);
+				return res.status(404).send({
+				status: 404,
+				error: `Meetup with Id ${id} dosen't exist`
+			});
 			} else  {
-				const rsvp = [
-					req.body.user,
-					resp.rows.topic,
-					req.body.status
-				]
-				pool.query('INSERT INTO rsvps (user, meetup, status) VALUES ($1, $2, $3)', rsvp, (erro, result) =>{
+				const topic = resp.rows[0].topic;
+				const meetup = resp.rows[0].id;
+				const user = req.body.createdby;
+				const response = req.body.response;
+				const newRsvp = [
+					meetup,
+					user,
+					topic,
+					response
+				];
+				//console.log(newRsvp);
+				pool.query('INSERT INTO rsvp(meetup, createdby, topic, response) VALUES ($1, $2, $3, $4)', newRsvp, 
+				(erro, result) =>{
 					if(erro){
 						return res.status(400).send({
 							status: 400,
 							error: erro
 						})
 					} 
-						return res.status(200).send({
-							status: 200,
-						data: resp.rows
+						return res.status(201).send({
+							status: 201,
+						data: result.rows
 					});
 				});
 			}
 		});
 	}
 	
+});
+
+// Ask question on a specific meetup with given meetup Id
+router.post('/:meetupId/question', (req, res) => {
+	let schema = {
+		title: Joi.string().min(3).required(),
+		body: Joi.string().min(3).required(),
+		createdby: Joi.number()
+	}
+	let { error } = Joi.validate(req.body, schema);
+	if(error){
+		res.send({
+			status: 400,
+			error: error.details[0].message
+		})
+	} else {
+
+		const id = req.params.meetupId;
+		pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
+			if (resp.rows.length === 0){
+				return res.status(404).send({
+				status: 404,
+				error: `Meetup with Id ${id} dosen't exist`
+			})
+			} else  {
+				const createdby = req.body.createdby;
+				const meetup = resp.rows[0].id;
+				const title = req.body.title;
+				const body = req.body.body;
+
+				const newQuestion = [
+					createdby,
+					meetup,
+					title,
+					body
+				];
+
+				
+				
+				pool.query('INSERT INTO questions (createdby, meetup, title, body) VALUES ($1, $2, $3, $4) returning *', newQuestion, 
+				(erro, result) =>{
+						if(result){
+							const qid = result.rows[0].id;
+							const vote =[qid, createdby, false, false];
+							pool.query('INSERT INTO votes (question, votedby, upvotes, downvotes) VALUES ($1, $2, $3, $4)', vote);
+						}
+						
+					if(erro){
+						return res.status(400).send({
+							status: 400,
+							error: erro
+						})
+					} else {
+						return res.status(200).send({
+							status: 200,
+							data: result.rows
+						});
+						
+					}
+										
+				});
+			}
+		});	
+	}	
 });
 export default router;

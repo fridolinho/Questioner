@@ -1,13 +1,13 @@
 const pool = require('./connect.js');
-
+  
 const deleteTables = () => {
- const usersTable = 'DROP TABLE users IF EXISTS';
- const meetupsTable = 'DROP TABLE meetups IF EXISTS';
- const questionsTable = 'DROP TABLE questions IF EXISTS';
- const rsvpsTable = 'DROP TABLE rsvp IF EXISTS';
+ const users = 'DROP TABLE users IF EXISTS';
+ const meetups = 'DROP TABLE meetups IF EXISTS';
+ const questions = 'DROP TABLE questions IF EXISTS';
+ const rsvp = 'DROP TABLE rsvp IF EXISTS';
 
 
- const dropQueries = `${usersTable}; ${questionsTable}; ${rsvpsTable}; ${meetupsTable};`;
+ const dropQueries = `${users}; ${questions}; ${rsvp}; ${meetups};`;
 
  pool.query(dropQueries)
    .then((res) => {
@@ -28,21 +28,21 @@ const createTables = () => {
  const users = `CREATE TABLE IF NOT EXISTS
      users(
        id SERIAL PRIMARY KEY,
-       “firstName” VARCHAR(50) NOT NULL,
-       “lastName” VARCHAR(50) NOT NULL,
-       “otherName” VARCHAR(50) NOT NULL,
+       firstname VARCHAR(50) NOT NULL,
+       lastname VARCHAR(50) NOT NULL,
+       othername VARCHAR(50) NOT NULL,
        email VARCHAR(100) NULL,
        phone VARCHAR(15) NOT NULL,
        username VARCHAR(50) NOT NULL,
        password TEXT NOT NULL,
        registered TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-       “isAdmin” BOOLEAN NOT NULL DEFAULT false
+       isadmin BOOLEAN NOT NULL DEFAULT false
      )`;
 
  const meetups = `CREATE TABLE IF NOT EXISTS
      meetups(
        id SERIAL PRIMARY KEY,
-       “createdOn” TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       createdon TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
        location VARCHAR(100) NOT NULL,
        images TEXT NULL,
        topic VARCHAR(50) NOT NULL,
@@ -53,8 +53,8 @@ const createTables = () => {
  const questions = `CREATE TABLE IF NOT EXISTS
      questions(
        id SERIAL PRIMARY KEY,
-       “createdOn” TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-       “createdBy” INT NOT NULL REFERENCES users(id),
+       createdOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       createdBy INT NOT NULL REFERENCES users(id),
        meetup INT NOT NULL REFERENCES meetups(id),
        title VARCHAR(100) NOT NULL,
        body TEXT NULL,
@@ -66,7 +66,8 @@ const createTables = () => {
      rsvp(
        id SERIAL PRIMARY KEY,
        meetup INT NOT NULL REFERENCES meetups(id),
-       “createdBy” INT NOT NULL REFERENCES users(id),
+       topic VARCHAR(255) NOT NULL,
+       createdby INT NOT NULL REFERENCES users(id),
        response VARCHAR(15) NOT NULL
      )`;
 
