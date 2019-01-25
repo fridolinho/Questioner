@@ -15,12 +15,12 @@ router.post('/', (req, res) => {
 	const password = "password";
 	const user =[firstName, lastName, otherName, email, phoneNumber, username, password];
 	const schema ={
-		firstname: Joi.string().min(3).required(),
-		lastname: Joi.string().min(3).required(),
-		othername: Joi.string(),
-		email: Joi.string().email().required(),
-		phonenumber: JoiPhone.string().phoneNumber().required(),
-		username: Joi.string().min(3).required(),
+		firstname: Joi.string().min(3).required().trim(),
+		lastname: Joi.string().min(3).required().trim(),
+		othername: Joi.string().trim(),
+		email: Joi.string().email().required().trim(),
+		phonenumber: JoiPhone.string().phoneNumber().required().trim(),
+		username: Joi.string().min(3).required().trim(),
 	}
 
 	const { error } = Joi.validate(req.body, schema);
@@ -58,9 +58,9 @@ router.get('/', (req, res) => {
 				data: resp.rows
 			});
 		} else {
-			return res.status(400).send({
-				status: 400,
-				error: err
+			return res.status(404).send({
+				status: 404,
+				error: `${email} not found`
 			});
 		}
 	});		

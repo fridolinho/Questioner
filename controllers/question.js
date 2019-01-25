@@ -38,7 +38,7 @@ router.patch('/:id/downvote', (req, res) => {
 					} else {
 						return res.status(404).send({
 							status: 404,
-							error: `Meetup with Id ${id} dosen't exist`
+							error: `Question with Id ${id} dosen't exist`
 						})
 					}
 			});
@@ -59,7 +59,7 @@ router.patch('/:id/downvote', (req, res) => {
 					} else {
 						return res.status(404).send({
 							status: 404,
-							error: `Meetup with Id ${id} dosen't exist`
+							error: `Question with Id ${id} dosen't exist`
 						})
 					}
 			});
@@ -101,7 +101,7 @@ router.patch('/:id/upvote', (req, res) => {
 				} else {
 					return res.status(404).send({
 						status: 404,
-						error: `Meetup with Id ${id} dosen't exist`
+						error: `Question with Id ${id} doesn't exist`
 					})
 				}
 			});
@@ -122,7 +122,7 @@ router.patch('/:id/upvote', (req, res) => {
 				} else {
 					return res.status(404).send({
 						status: 404,
-						error: `Meetup with Id ${id} dosen't exist`
+						error: `Question with Id ${id} doesn't exist`
 					})
 				}
 			});

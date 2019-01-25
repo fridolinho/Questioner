@@ -96,11 +96,11 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
 
 	const schema = {
-		location: Joi.string().min(3).required(),
+		location: Joi.string().min(3).required().trim(),
 		images: Joi.string().min(3).required(),
-		topic: Joi.string().min(3).required(),
-		happeningon: Joi.string().min(3).required(),
-		tags: Joi.string().min(3).required()
+		topic: Joi.string().min(3).required().trim(),
+		happeningon: Joi.string().min(3).trim().required(),
+		tags: Joi.string().min(3).required().trim()
 	}
 	const { error } = Joi.validate(req.body, schema);
 
@@ -142,10 +142,10 @@ router.put('/:id', (req, res) => {
 	const id = req.params.id;
 	pool.query('SELECT * FROM meetups WHERE id = $1', [id], (err, resp) => {
 		const schema = {
-			location: Joi.string().min(3).required(),
-			images: Joi.string().min(3).required(),
-			topic: Joi.string().min(3).required(),
-			happeningon: Joi.string().min(3).required(),
+			location: Joi.string().min(3).required().trim(),
+			images: Joi.string().min(3).required().trim(),
+			topic: Joi.string().min(3).required().trim(),
+			happeningon: Joi.string().min(3).required().trim(),
 			tags: Joi.string().min(3).required()
 		}
 
@@ -267,9 +267,9 @@ router.post('/:meetupId/rsvp', (req, res) => {
 // Ask question on a specific meetup with given meetup Id
 router.post('/:meetupId/question', (req, res) => {
 	let schema = {
-		title: Joi.string().min(3).required(),
-		body: Joi.string().min(3).required(),
-		createdby: Joi.number()
+		title: Joi.string().min(3).required().trim(),
+		body: Joi.string().min(3).required().trim(),
+		createdby: Joi.number().required()
 	}
 	let { error } = Joi.validate(req.body, schema);
 	if(error){
