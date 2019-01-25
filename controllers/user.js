@@ -1,53 +1,69 @@
 import express from 'express';
-import users from '../models/user';
+import Joi from 'joi';
+const JoiPhone = Joi.extend(require('joi-phone-number'));
 const router = express.Router();
+import pool from '../connect.js';
 
 //User registration
 router.post('/', (req, res) => {
-	const user = {
-		id: users.length + 1,
-		firstname: req.body.firstname,
-		lastname: req.body.lastname,
-		othername: req.body.othername,
-		email: req.body.email,
-		phoneNumber: req.body.phoneNumber,
-		username: req.body.username,
-		registered: Date(),
-		isAdmin: "no"
+	const firstName = req.body.firstname;
+	const lastName = req.body.lastname;
+	const otherName = req.body.othername;
+	const email = req.body.email;
+	const phoneNumber = req.body.phonenumber;
+	const username = req.body.username;
+	const password = "password";
+	const user =[firstName, lastName, otherName, email, phoneNumber, username, password];
+	const schema ={
+		firstname: Joi.string().min(3).required(),
+		lastname: Joi.string().min(3).required(),
+		othername: Joi.string(),
+		email: Joi.string().email().required(),
+		phonenumber: JoiPhone.string().phoneNumber().required(),
+		username: Joi.string().min(3).required(),
 	}
 
-	if (users.push(user)) {
-		console.log(user.registered);
-		return res.send({
+	const { error } = Joi.validate(req.body, schema);
+	if (error){
+		return res.status(400).send({
+				status: 400,
+				error: error.details[0].message
+				});
+	} else {
+		pool.query('INSERT INTO users (firstname, lastname, othername, email, phone, username, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', user)
+		.then((response)=>{
+			return res.status(201).send({
 			status: 201,
-			data: user
+			data: response.rows
 		});
+		})
+		.catch((err)=>{
+			return res.status(400).send({
+             status: 400,
+             error: err.message
+			})
+		})
 	}
-		return res.send({
-			status: 404,
-			error: "User not registered"
-		});	
+	
 });
 
 //User login
 router.get('/', (req, res) => {
 	const email = req.body.email;
 	const logUser = [];
-	for (let i = 0; i < users.length; i++) {
-		if (users[i].email === email) {
-			logUser.push(users[i]);
+	pool.query('SELECT * FROM users WHERE email = $1', [email], (err, resp) => {
+		if(resp){
+			return res.status(200).send({
+				status: 200,
+				data: resp.rows
+			});
+		} else {
+			return res.status(400).send({
+				status: 400,
+				error: err
+			});
 		}
-	}
-		if (logUser.length !== 1) {
-			return res.send({
-				status: 404,
-				error: "User not found"
-			})
-		}
-		return res.send({
-			status: 200,
-			data: logUser
-		});
+	});		
 });
 
 export default router;

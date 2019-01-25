@@ -1,4 +1,5 @@
-import express from 'express';
+const connectionString = "postgres://postgres:123@localhost:5432/postgres";import express from 'express';
+import pg from 'pg';
 import meetups from './models/meetup';
 import questions from './models/question';
 import users from './models/user';
