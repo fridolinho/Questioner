@@ -71,7 +71,16 @@ const createTables = () => {
        response VARCHAR(15) NOT NULL
      )`;
 
- const createQueries = `${users}; ${meetups}; ${questions}; ${rsvp};`;
+ const vote = `CREATE TABLE IF NOT EXISTS
+ votes(
+    id SERIAL PRIMARY KEY,
+    question INT NOT NULL REFERENCES questions(id),
+    votedby INT NOT NULL REFERENCES users(id),
+    upvotes BOOLEAN,
+    downvotes BOOLEAN
+  )`;
+
+ const createQueries = `${users}; ${meetups}; ${questions}; ${rsvp}; ${vote}`;
 
  pool.query(createQueries)
    .then((res) => {
